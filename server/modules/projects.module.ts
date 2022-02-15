@@ -9,7 +9,7 @@ import { ProjectsService } from 'server/providers/services/projects.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Project, Task, ProjectMember])],
-  // controllers: [ProjectsController],
+  controllers: [ProjectsController],
   providers: [ProjectsService],
   exports: [TypeOrmModule],
 })

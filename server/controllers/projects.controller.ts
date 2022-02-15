@@ -5,7 +5,6 @@ import { Project } from "server/entities/project.entity";
 import { ProjectMember } from "server/entities/project_member.entity";
 import { Task } from "server/entities/task.entity";
 import { ProjectsService } from "server/providers/services/projects.service";
-import { UsersService } from "server/providers/services/users.service";
 
 class ProjectBody {
     name: string;
@@ -17,7 +16,7 @@ class ProjectBody {
 export class ProjectsController {
     constructor(
         private projectsService: ProjectsService,
-        private usersService: UsersService,
+
     ) {}
 
     @Get('/projects')
@@ -29,11 +28,8 @@ export class ProjectsController {
     @Post('/projects')
     public async create(@JwtBody() jwtBody: JwtBodyDto, @Body() body: ProjectBody) {
         let project = new Project();
-        project.leader = await this.usersService.find(jwtBody.userId);
         project.leaderId = jwtBody.userId;
         project.name = body.name;
-        project.projectMembers = body.projectMembers;
-        project.tasks = body.tasks;
         project = await this.projectsService.createProject(project);
         return { project };
     }
