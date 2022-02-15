@@ -5,26 +5,26 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProjectsService {
-    constructor(
-        @InjectRepository(Project)
-        private projectRepository: Repository<Project>,
-    ) {}
+  constructor(
+    @InjectRepository(Project)
+    private projectRepository: Repository<Project>,
+  ) {}
 
-    findAllForUser(userId: number): Promise<Project[]> {
-        return this.projectRepository.find({
-            where: {userId},
-        });
-    }
+  findAllForUser(userId: number): Promise<Project[]> {
+    return this.projectRepository.find({
+      where: { userId },
+    });
+  }
 
-    createProject(project: Project): Promise<Project> {
-        return this.projectRepository.save(project);
-    }
+  createProject(project: Project): Promise<Project> {
+    return this.projectRepository.save(project);
+  }
 
-    findProjectById(id: number) {
-        return this.projectRepository.findOne(id);
-    }
+  findProjectById(id: number) {
+    return this.projectRepository.findOne(id);
+  }
 
-    removeProject(project: Project) {
-        this.projectRepository.delete(project);
-    }
+  removeProject(project: Project) {
+    this.projectRepository.delete(project);
+  }
 }
