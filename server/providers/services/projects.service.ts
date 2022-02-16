@@ -10,9 +10,9 @@ export class ProjectsService {
     private projectRepository: Repository<Project>,
   ) {}
 
-  findAllForUser(userId: number): Promise<Project[]> {
+  findAllForUser(leaderId: number): Promise<Project[]> {
     return this.projectRepository.find({
-      where: { userId },
+      where: { leaderId },
     });
   }
 
