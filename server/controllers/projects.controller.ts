@@ -5,16 +5,25 @@ import { Project } from 'server/entities/project.entity';
 import { ProjectMember } from 'server/entities/project_member.entity';
 import { Task } from 'server/entities/task.entity';
 import { ProjectsService } from 'server/providers/services/projects.service';
+import { TasksService } from 'server/providers/services/tasks.service';
 
 class ProjectBody {
   name: string;
   projectMembers: ProjectMember[];
-  tasks: Task[];
+}
+
+class TaskBody {
+  userId: number;
+  projectId: number;
+  title: string;
+  description: string;
+  timeEstimation: string;
+  status: string;
 }
 
 @Controller()
 export class ProjectsController {
-  constructor(private projectsService: ProjectsService) {}
+  constructor(private projectsService: ProjectsService, private tasksService: TasksService) {}
 
   @Get('/projects')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
@@ -41,5 +50,24 @@ export class ProjectsController {
     this.projectsService.removeProject(project);
 
     return { success: true };
+  }
+
+  @Get('/projects/:id/tasks')
+  public async getTasks(@Param('id') id: number) {
+    const projects = await this.tasksService.findAllForProject(id);
+    return projects;
+  }
+
+  @Post('/projects/:id/tasks')
+  public async createTask(@JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskBody) {
+    let task = new Task();
+    task.userId = body.userId;
+    task.projectId = body.projectId;
+    task.title = body.title;
+    task.description = body.description;
+    task.timeEstimation = body.timeEstimation;
+    task.status = body.status;
+    task = await this.tasksService.createTask(task);
+    return { task };
   }
 }
