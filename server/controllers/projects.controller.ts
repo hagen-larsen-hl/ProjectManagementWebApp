@@ -9,7 +9,6 @@ import { TasksService } from 'server/providers/services/tasks.service';
 
 class ProjectBody {
   name: string;
-  projectMembers: ProjectMember[];
 }
 
 class TaskBody {

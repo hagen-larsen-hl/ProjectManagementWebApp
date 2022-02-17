@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task } from 'server/entities/task.entity.ts';
+import { Task } from 'server/entities/task.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -16,15 +16,7 @@ export class TasksService {
     });
   }
 
-  createProject(task: Task): Promise<Task> {
+  createTask(task: Task): Promise<Task> {
     return this.taskRepository.save(task);
-  }
-
-  findtaskById(id: number) {
-    return this.taskRepository.findOne(id);
-  }
-
-  removetask(task: Task) {
-    this.taskRepository.delete(task);
   }
 }
