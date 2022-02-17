@@ -5,7 +5,7 @@ export const Projects = ({ projects, deleteProject }) => {
     <div className="flex m-2 p-2">
       <div className="w-1/2 border-2">
         <div className="text-xl m-2 p-2">
-          <strong>My Projects</strong>
+          <strong>Leader Of</strong>
         </div>
         {projects.map((project) => (
           <Project key={project.id} project={project} deleteProject={deleteProject} />
