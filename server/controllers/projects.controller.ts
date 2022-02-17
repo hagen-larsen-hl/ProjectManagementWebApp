@@ -52,9 +52,9 @@ export class ProjectsController {
   }
 
   @Get('/projects/:id/tasks')
-  public async getTasks(@Param('id') id: number) {
-    const projects = await this.tasksService.findAllForProject(id);
-    return projects;
+  public async getTasks(@Param('id') id: string) {
+    const tasks = await this.tasksService.findAllForProject(parseInt(id, 10));
+    return { tasks };
   }
 
   @Post('/projects/:id/tasks')
