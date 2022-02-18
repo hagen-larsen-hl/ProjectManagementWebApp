@@ -5,12 +5,20 @@ export const Project = ({ project, deleteProject }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="border-2 rounded m-4 p-4">
-      <strong>Project Name: </strong>
-      {project.name}
-      <div className="py-2">
-        <Button onClick={() => navigate(`/project/${project.id}`)}>Open</Button>
-        <Button onClick={() => deleteProject(project)}>Delete</Button>
+    <div className="flex border-2 rounded m-4 p-4">
+      <div className="w-1/2">
+        <strong>Project Name: </strong>
+        <br />
+        {project.name}
+        <div className="py-2">
+          <Button onClick={() => navigate(`/project/${project.id}`)}>Open</Button>
+          <Button onClick={() => deleteProject(project)}>Delete</Button>
+        </div>
+      </div>
+      <div className="w-1/2">
+        <strong>Add Member: </strong>
+        <input className="border-2 mb-2" type="text" />
+        <Button>Add</Button>
       </div>
     </div>
   );
