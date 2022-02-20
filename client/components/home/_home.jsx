@@ -15,8 +15,6 @@ export const Home = () => {
   const api = useContext(ApiContext);
   const roles = useContext(RolesContext);
 
-  const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
   useEffect(async () => {
     const res = await api.get('/users/me');
@@ -25,13 +23,6 @@ export const Home = () => {
     setProjects(projects);
     setLoading(false);
   }, []);
-
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
 
   if (loading) {
     return <div>Loading...</div>;

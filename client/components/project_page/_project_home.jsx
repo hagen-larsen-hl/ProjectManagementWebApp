@@ -4,7 +4,7 @@ import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
-import { BlueButton } from '../common/blue_button';
+import { BlueButtonBig } from '../common/blue_button_big';
 import { PageHeader } from '../common/page_header';
 import { Tasks } from './tasks';
 import { useParams } from 'react-router-dom';
@@ -17,12 +17,9 @@ export const ProjectHome = () => {
   const [taskDescription, setTaskDescription] = useState('');
   const [taskEstimation, setTaskEstimation] = useState('');
   const [showCreateTaskMenu, setShowCreateTaskMenu] = useState(false);
-  const taskStatus = 'Incomplete';
   const api = useContext(ApiContext);
   const roles = useContext(RolesContext);
   const params = useParams();
-
-  const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   useEffect(async () => {
@@ -42,11 +39,11 @@ export const ProjectHome = () => {
       title: taskTitle,
       description: taskDescription,
       timeEstimation: taskEstimation,
-      status: taskStatus,
+      status: 'Incomplete',
       projectId: params.id,
     };
     const { task } = await api.post(`/projects/${params.id}/tasks`, taskBody);
-    console.log(task);
+    // console.log(task);
     setTasks([task, ...tasks]);
   };
 
@@ -56,9 +53,9 @@ export const ProjectHome = () => {
 
       <div className="relative inline-block text-left m-5 ">
         <div>
-          <BlueButton type="button" onClick={() => setShowCreateTaskMenu(!showCreateTaskMenu)}>
+          <BlueButtonBig type="button" onClick={() => setShowCreateTaskMenu(!showCreateTaskMenu)}>
             {showCreateTaskMenu ? 'Hide' : 'Create New Task'}
-          </BlueButton>
+          </BlueButtonBig>
         </div>
         {showCreateTaskMenu && (
           <div className="origin-top-right right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
@@ -91,7 +88,7 @@ export const ProjectHome = () => {
                 onChange={(e) => setTaskEstimation(e.target.value)}
               />
               <div className="py-2">
-                <BlueButton onClick={saveTask}>Save</BlueButton>
+                <BlueButtonBig onClick={saveTask}>Save</BlueButtonBig>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { RolesContext } from '../../utils/roles_context';
 import { useNavigate } from 'react-router';
-import { Button } from '../common/button';
+import { ButtonBig } from '../common/button_big';
 
 export const PageHeader = () => {
   const roles = useContext(RolesContext);
@@ -16,16 +16,16 @@ export const PageHeader = () => {
 
   return (
     <div className="p-4 m-4 border-2 rounded-md">
-      <Button type="button" onClick={logout}>
+      <ButtonBig type="button" onClick={logout}>
         Logout
-      </Button>
-      <Button type="button" onClick={() => navigate('/')}>
+      </ButtonBig>
+      <ButtonBig type="button" onClick={() => navigate('/')}>
         Projects
-      </Button>
+      </ButtonBig>
       {roles.includes('admin') && (
-        <Button type="button" onClick={() => navigate('/admin')}>
+        <ButtonBig type="button" onClick={() => navigate('/admin')}>
           Admin
-        </Button>
+        </ButtonBig>
       )}
     </div>
   );
