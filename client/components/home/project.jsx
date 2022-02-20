@@ -9,8 +9,8 @@ export const Project = ({ project, deleteProject }) => {
       <strong>Project Name: </strong>
       {project.name}
       <div className="py-2">
-        <Button onClick={() => navigate(`/project/${project.id}`)}>Open</Button>
         <Button onClick={() => deleteProject(project)}>Delete</Button>
+        <Button onClick={() => navigate(`/project/${project.id}`)}>Open</Button>
       </div>
     </div>
   );

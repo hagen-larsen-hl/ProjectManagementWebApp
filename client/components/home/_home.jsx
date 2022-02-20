@@ -5,6 +5,7 @@ import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
 import { Projects } from './projects';
+import { PageHeader } from '../common/page_header';
 
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
@@ -14,8 +15,6 @@ export const Home = () => {
   const api = useContext(ApiContext);
   const roles = useContext(RolesContext);
 
-  const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
   useEffect(async () => {
     const res = await api.get('/users/me');
@@ -24,13 +23,6 @@ export const Home = () => {
     setProjects(projects);
     setLoading(false);
   }, []);
-
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -58,17 +50,8 @@ export const Home = () => {
 
   return (
     <div>
-      <div className="p-4 m-4 border-2">
-        <h1>Welcome {user.firstName}</h1>
-        <Button type="button" onClick={logout}>
-          Logout
-        </Button>
-        {roles.includes('admin') && (
-          <Button type="button" onClick={() => navigate('/admin')}>
-            Admin
-          </Button>
-        )}
-      </div>
+      <PageHeader />
+
       <div className="flex flex-col w-1/2 p-4 m-4 border-2">
         <h3 className="text-xl p-2">Create New Project</h3>
         <span className="p-2">
