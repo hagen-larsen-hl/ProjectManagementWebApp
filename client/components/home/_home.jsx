@@ -5,6 +5,7 @@ import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
 import { Projects } from './projects';
+import { PageHeader } from '../common/page_header';
 
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
@@ -58,17 +59,8 @@ export const Home = () => {
 
   return (
     <div>
-      <div className="p-4 m-4 border-2">
-        <h1>Welcome {user.firstName}</h1>
-        <Button type="button" onClick={logout}>
-          Logout
-        </Button>
-        {roles.includes('admin') && (
-          <Button type="button" onClick={() => navigate('/admin')}>
-            Admin
-          </Button>
-        )}
-      </div>
+      <PageHeader />
+
       <div className="flex flex-col w-1/2 p-4 m-4 border-2">
         <h3 className="text-xl p-2">Create New Project</h3>
         <span className="p-2">

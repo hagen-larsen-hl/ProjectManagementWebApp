@@ -4,6 +4,8 @@ import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
+import { BlueButton } from '../common/blue_button';
+import { PageHeader } from '../common/page_header';
 import { Tasks } from './tasks';
 import { useParams } from 'react-router-dom';
 
@@ -14,7 +16,8 @@ export const ProjectHome = () => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskEstimation, setTaskEstimation] = useState('');
-  const taskStatus = useState('To do');
+  const [showCreateTaskMenu, setShowCreateTaskMenu] = useState(false);
+  const taskStatus = 'Incomplete';
   const api = useContext(ApiContext);
   const roles = useContext(RolesContext);
   const params = useParams();
@@ -30,13 +33,6 @@ export const ProjectHome = () => {
     setLoading(false);
   }, []);
 
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -51,38 +47,67 @@ export const ProjectHome = () => {
     };
     const { task } = await api.post(`/projects/${params.id}/tasks`, taskBody);
     console.log(task);
-    setTasks([...tasks, task]);
+    setTasks([task, ...tasks]);
   };
 
   return (
     <div>
-      <div className="p-4 m-4 border-2">
-        <Button type="button" onClick={logout}>
-          Logout
-        </Button>
-        {roles.includes('admin') && (
-          <Button type="button" onClick={() => navigate('/admin')}>
-            Admin
-          </Button>
+      <PageHeader />
+
+      <div className="relative inline-block text-left m-5 ">
+        <div>
+          <BlueButton type="button" onClick={() => setShowCreateTaskMenu(!showCreateTaskMenu)}>
+            {showCreateTaskMenu ? 'Hide' : 'Create New Task'}
+          </BlueButton>
+        </div>
+        {showCreateTaskMenu && (
+          <div className="origin-top-right right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="p-5">
+              <span className="text-md font-medium text-slate-700">
+                <strong>Title: </strong>
+              </span>
+              <input
+                className="px-3 py-2 mb-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1"
+                type="text"
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
+              />
+              <span className="text-md mt-5 font-medium text-slate-700">
+                <strong>Description: </strong>
+              </span>
+              <textarea
+                className="px-3 py-2 mt-1 mb-5 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1"
+                type="text"
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+              />
+              <span className="text-md mt-5 mr-5 font-medium text-slate-700">
+                <strong>Time Estimation: </strong>
+              </span>
+              <input
+                className="mt-1 px-3 py-2 w-20 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 w-full rounded-md sm:text-sm focus:ring-1"
+                type="number"
+                value={taskEstimation}
+                onChange={(e) => setTaskEstimation(e.target.value)}
+              />
+              <div className="py-2">
+                <BlueButton onClick={saveTask}>Save</BlueButton>
+              </div>
+            </div>
+          </div>
         )}
       </div>
-      <div className="flex flex-col w-1/2 p-4 m-4 border-2">
-        <h3 className="text-xl p-2">Create New Task</h3>
-        <span className="p-2">
-          <strong>Title: </strong>
-          <input className="border-2" value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)} />
-        </span>
-        <span className="p-2">
-          <strong>Description: </strong>
-          <input className="border-2" value={taskDescription} onChange={(e) => setTaskDescription(e.target.value)} />
-        </span>
-        <span className="p-2">
-          <strong>Time Estimation: </strong>
-          <input className="border-2" value={taskEstimation} onChange={(e) => setTaskEstimation(e.target.value)} />
-        </span>
-        <Button onClick={saveTask}>Save</Button>
+      <div className="flex columns-2 w-1/4">
+        <div className="border-2 rounded-md m-4 min-w-full place-content-evenly">
+          <h3 className="m-4 text-center text-2xl">Incomplete</h3>
+          <Tasks tasks={tasks.filter((task) => task.status === 'Incomplete')} />
+        </div>
+        <div className="border-2 rounded-md m-4 min-w-full place-content-center">
+          <h3 className="m-4 text-center text-2xl">Done</h3>
+          {console.log(tasks)}
+          <Tasks tasks={tasks.filter((task) => task.status === 'Done')} />
+        </div>
       </div>
-      <Tasks tasks={tasks} />
     </div>
   );
 };
