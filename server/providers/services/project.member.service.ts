@@ -17,6 +17,7 @@ export class ProjectMemberService {
   }
 
   createProjectMember(projectMember: ProjectMember): Promise<ProjectMember> {
+    console.log(projectMember);
     return this.projectMemberRepository.save(projectMember);
   }
 }

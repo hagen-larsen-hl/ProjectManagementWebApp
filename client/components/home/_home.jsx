@@ -53,8 +53,6 @@ export const Home = () => {
     }
   };
 
-  console.log(projects);
-
   return (
     <div>
       <PageHeader />

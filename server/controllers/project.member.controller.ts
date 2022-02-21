@@ -1,11 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ProjectMember } from 'server/entities/project_member.entity';
+import { ProjectMember } from 'server/entities/project.member.entity';
 import { ProjectMemberService } from 'server/providers/services/project.member.service';
 import { UsersService } from 'server/providers/services/users.service';
 
 class ProjectMemberBody {
-  projectId: number;
   email: string;
+  projectId: number;
 }
 
 @Controller()
@@ -15,9 +15,10 @@ export class ProjectMemberController {
   @Post('/members')
   public async create(@Body() body: ProjectMemberBody) {
     let projectMember = new ProjectMember();
-    projectMember.userId = (await this.userService.findByEmail(body.email)).id
+    projectMember.userId = (await this.userService.findByEmail(body.email)).id;
     projectMember.projectId = body.projectId;
     projectMember = await this.projectMemberService.createProjectMember(projectMember);
+    console.log('Got here');
     return { projectMember };
   }
 }
