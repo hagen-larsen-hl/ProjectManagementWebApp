@@ -28,6 +28,13 @@ export const Home = () => {
     return <div>Loading...</div>;
   }
 
+  const logout = async () => {
+    const res = await api.del('/sessions');
+    if (res.success) {
+      setAuthToken(null);
+    }
+  };
+
   const saveProject = async () => {
     const projectBody = {
       name: name,
