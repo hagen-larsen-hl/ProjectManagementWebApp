@@ -50,6 +50,7 @@ export const Home = () => {
 
   return (
     <div>
+      <PageHeader />
       <div className="flex p-4 m-4 border-2 bg-gray-200">
         <div className="w-1/2">
           <h1 className="text-6xl mb-2">Projects Overview</h1>
