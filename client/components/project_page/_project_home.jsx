@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
-import { Button } from '../common/button';
 import { BlueButtonBig } from '../common/blue_button_big';
 import { PageHeader } from '../common/page_header';
 import { Tasks } from './tasks';
@@ -12,27 +10,27 @@ import { useParams } from 'react-router-dom';
 export const ProjectHome = () => {
   const [, setAuthToken] = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskEstimation, setTaskEstimation] = useState('');
   const [showCreateTaskMenu, setShowCreateTaskMenu] = useState(false);
+  const [doneTasks, setDoneTasks] = useState([]);
+  const [incompleteTasks, setIncompleteTasks] = useState([]);
+
   const api = useContext(ApiContext);
   const roles = useContext(RolesContext);
   const params = useParams();
-
   const [user, setUser] = useState(null);
+
   useEffect(async () => {
     const res = await api.get('/users/me');
     setUser(res.user);
     const { tasks } = await api.get(`/projects/${params.id}/tasks`);
-    setTasks(tasks);
-    setLoading(false);
-  }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    setTasks(tasks);
+    setDoneTasks(tasks.filter((task) => task.status === 'Done'));
+    setIncompleteTasks(tasks.filter((task) => task.status === 'Incomplete'));
+  }, []);
 
   const saveTask = async () => {
     const taskBody = {
@@ -97,12 +95,22 @@ export const ProjectHome = () => {
       <div className="flex columns-2 w-1/4">
         <div className="border-2 rounded-md m-4 min-w-full place-content-evenly">
           <h3 className="m-4 text-center text-2xl">Incomplete</h3>
-          <Tasks tasks={tasks.filter((task) => task.status === 'Incomplete')} />
+          <Tasks
+            tasks={incompleteTasks}
+            setIncompleteTasks={setIncompleteTasks}
+            setDoneTasks={setDoneTasks}
+            setTasks={setTasks}
+            allTasks={tasks}
+          />
         </div>
         <div className="border-2 rounded-md m-4 min-w-full place-content-center">
           <h3 className="m-4 text-center text-2xl">Done</h3>
-          {console.log(tasks)}
-          <Tasks tasks={tasks.filter((task) => task.status === 'Done')} />
+          <Tasks
+            tasks={doneTasks}
+            setIncompleteTasks={setIncompleteTasks}
+            setDoneTasks={setDoneTasks}
+            allTasks={tasks}
+          />
         </div>
       </div>
     </div>
