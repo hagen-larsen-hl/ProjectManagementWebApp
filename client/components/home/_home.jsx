@@ -50,15 +50,29 @@ export const Home = () => {
 
   return (
     <div>
-      <PageHeader />
-
-      <div className="flex flex-col w-1/2 p-4 m-4 border-2">
-        <h3 className="text-xl p-2">Create New Project</h3>
-        <span className="p-2">
-          <strong>Name: </strong>
-          <input className="border-2" value={name} onChange={(e) => setName(e.target.value)} />
-        </span>
-        <Button onClick={saveProject}>Save</Button>
+      <div className="flex p-4 m-4 border-2 bg-gray-200">
+        <div className="w-1/2">
+          <h1 className="text-6xl mb-2">Projects Overview</h1>
+          <h2 className="text-3xl mb-2">
+            {user.firstName} {user.lastName}
+          </h2>
+          <Button type="button" onClick={logout}>
+            Logout
+          </Button>
+          {roles.includes('admin') && (
+            <Button type="button" onClick={() => navigate('/admin')}>
+              Admin
+            </Button>
+          )}
+        </div>
+        <div className="w-1/2 p-1 m-1 border-2 border-black">
+          <h3 className="text-xl p-1">Create New Project</h3>
+          <span className="p-2">
+            <strong>Name: </strong>
+            <input className="border-2" value={name} onChange={(e) => setName(e.target.value)} />
+          </span>
+          <Button onClick={saveProject}>Save</Button>
+        </div>
       </div>
       <Projects projects={projects} deleteProject={deleteProject} />
     </div>
