@@ -5,6 +5,7 @@ import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
 import { Projects } from './projects';
+import { PageHeader } from '../common/page_header';
 
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
@@ -14,8 +15,6 @@ export const Home = () => {
   const api = useContext(ApiContext);
   const roles = useContext(RolesContext);
 
-  const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
   useEffect(async () => {
     const res = await api.get('/users/me');
@@ -24,13 +23,6 @@ export const Home = () => {
     setProjects(projects);
     setLoading(false);
   }, []);
-
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -58,6 +50,7 @@ export const Home = () => {
 
   return (
     <div>
+      <PageHeader />
       <div className="flex p-4 m-4 border-2 bg-gray-200">
         <div className="w-1/2">
           <h1 className="text-6xl mb-2">Projects Overview</h1>
