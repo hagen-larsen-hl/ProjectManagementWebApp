@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
-import { of } from 'rxjs';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query } from '@nestjs/common';
 import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Project } from 'server/entities/project.entity';
@@ -30,10 +29,16 @@ export class ProjectsController {
     private projectMemberService: ProjectMemberService,
   ) {}
 
-  @Get('/projects')
+  @Get('/projects/leader')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
     const projects = await this.projectsService.findAllForUser(jwtBody.userId);
-    return { projects };
+    return { leaderProjects: projects };
+  }
+
+  @Get('/projects/member')
+  public async indexMemberOf(@JwtBody() jwtBody: JwtBodyDto) {
+    const projects = await this.projectsService.findAllWithMember(jwtBody.userId);
+    return { memberProjects: projects };
   }
 
   @Get('/projects/memberOf')
