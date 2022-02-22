@@ -16,8 +16,13 @@ export class ProjectMemberService {
     });
   }
 
+  findAllForUserId(userId: number): Promise<ProjectMember[]> {
+    return this.projectMemberRepository.find({
+      where: { userId },
+    });
+  }
+
   createProjectMember(projectMember: ProjectMember): Promise<ProjectMember> {
-    console.log(projectMember);
     return this.projectMemberRepository.save(projectMember);
   }
 }

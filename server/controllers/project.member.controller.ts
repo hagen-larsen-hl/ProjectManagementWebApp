@@ -18,7 +18,6 @@ export class ProjectMemberController {
     projectMember.userId = (await this.userService.findByEmail(body.email)).id;
     projectMember.projectId = body.projectId;
     projectMember = await this.projectMemberService.createProjectMember(projectMember);
-    console.log('Got here');
     return { projectMember };
   }
 }

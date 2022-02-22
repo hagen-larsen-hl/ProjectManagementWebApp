@@ -10,6 +10,7 @@ import { PageHeader } from '../common/page_header';
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
+  const [memberProjects, setMemberProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState('');
   const api = useContext(ApiContext);
@@ -21,6 +22,8 @@ export const Home = () => {
     setUser(res.user);
     const { projects } = await api.get('/projects');
     setProjects(projects);
+    const { memberProjects } = await api.get('/projects/memberOf');
+    setMemberProjects(memberProjects);
     setLoading(false);
   }, []);
 
@@ -40,7 +43,6 @@ export const Home = () => {
       name: name,
     };
     const { project } = await api.post('/projects', projectBody);
-    console.log(projects);
     setProjects([...projects, project]);
   };
 
@@ -80,7 +82,7 @@ export const Home = () => {
           <Button onClick={saveProject}>Save</Button>
         </div>
       </div>
-      <Projects projects={projects} deleteProject={deleteProject} />
+      <Projects projects={projects} memberProjects={memberProjects} deleteProject={deleteProject} />
     </div>
   );
 };

@@ -41,7 +41,6 @@ export const ProjectHome = () => {
       projectId: params.id,
     };
     const { task } = await api.post(`/projects/${params.id}/tasks`, taskBody);
-    // console.log(task);
     setTasks([task, ...tasks]);
     setIncompleteTasks([task, ...incompleteTasks]);
     setTaskTitle('');

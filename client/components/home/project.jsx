@@ -13,9 +13,8 @@ export const Project = ({ project, deleteProject }) => {
       email: email,
       projectId: project.id,
     };
-    console.log(projectMemberBody);
     const { projectMember } = await api.post('/members', projectMemberBody);
-    console.log(projectMember);
+    return { projectMember };
   };
 
   return (

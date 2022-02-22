@@ -1,6 +1,6 @@
 import { Project } from './project';
 
-export const Projects = ({ projects, deleteProject }) => {
+export const Projects = ({ projects, memberProjects, deleteProject }) => {
   return (
     <div className="flex m-2 p-2">
       <div className="w-1/2 border-2">
