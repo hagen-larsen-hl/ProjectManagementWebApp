@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ProjectMember } from 'server/entities/project.member.entity';
+import { ProjectMember } from 'server/entities/project_member.entity';
 import { ProjectMemberService } from 'server/providers/services/project.member.service';
 import { UsersService } from 'server/providers/services/users.service';
 
