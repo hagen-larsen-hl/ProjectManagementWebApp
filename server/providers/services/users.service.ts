@@ -30,8 +30,12 @@ export class UsersService {
     return this.usersRespository.findOne(id, { relations });
   }
 
-  findByEmail(email: string) {
-    return this.usersRespository.findOne({ email });
+  async findByEmail(email: string) {
+    const res = await this.usersRespository.findOne({ email });
+    if (typeof res === 'undefined') {
+      return false;
+    }
+    return res;
   }
 
   create(user: User) {
