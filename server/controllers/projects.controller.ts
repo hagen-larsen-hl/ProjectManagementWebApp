@@ -91,6 +91,7 @@ export class ProjectsController {
     // task.user = await this.usersService.find(jwtBody.userId);
     // task.project = await this.projectsService.findProjectById(body.projectId);
     task = await this.tasksService.createTask(task);
+    task = await this.tasksService.findTaskById(task.id);
     return { task };
   }
 
@@ -104,10 +105,11 @@ export class ProjectsController {
     task.description = body.description;
     task.timeEstimation = body.timeEstimation;
     task.status = body.status;
-    task.user = await this.usersService.find(jwtBody.userId);
-    task.project = await this.projectsService.findProjectById(body.projectId);
+    // task.user = await this.usersService.find(jwtBody.userId);
+    // task.project = await this.projectsService.findProjectById(body.projectId);
     task = await this.tasksService.createTask(task);
-    return { task };
+    task = await this.tasksService.findTaskById(parseInt(task_id, 10));
+    return { updatedTask: task };
   }
 
   @Delete('projects/:id/tasks/:task_id')

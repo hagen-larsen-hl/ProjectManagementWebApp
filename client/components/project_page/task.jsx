@@ -4,39 +4,61 @@ import { Button } from '../common/button';
 import { BlueButton } from '../common/blue_button';
 import { RedButton } from '../common/red_button';
 
-export const Task = ({ task, setIncompleteTasks, setDoneTasks, allTasks, deleteTask, user }) => {
+export const Task = ({
+  task,
+  setIncompleteTasks,
+  setDoneTasks,
+  allTasks,
+  doneTasks,
+  incompleteTasks,
+  deleteTask,
+  user,
+}) => {
   const api = useContext(ApiContext);
 
   const updateTaskStatus = async (newStatus) => {
     // task.status = newStatus;
     const taskBody = {
-      userId: task.userId,
-      title: task.title,
-      description: task.description,
-      timeEstimation: task.timeEstimation,
+      // userId: task.userId,
+      // title: task.title,
+      // description: task.description,
+      // timeEstimation: task.timeEstimation,
       status: newStatus,
-      projectId: task.projectId,
+      // projectId: task.projectId,
     };
     const { updatedTask } = await api.put(`/projects/${task.projectId}/tasks/${task.id}`, taskBody);
+    
+    console.log(`Updated task: ${updatedTask}`);
 
-    setDoneTasks(allTasks.filter((e) => e.status === 'Done'));
-    setIncompleteTasks(allTasks.filter((e) => e.status === 'Incomplete'));
+    if (newStatus === 'Done') {
+      setDoneTasks([updatedTask, ...doneTasks.filter((e) => e !== task)]);
+      setIncompleteTasks(incompleteTasks.filter((e) => e !== task));
+    } else {
+      setDoneTasks(doneTasks.filter((e) => e !== task));
+      setIncompleteTasks([updatedTask, ...incompleteTasks.filter((e) => e !== task)]);
+    }
   };
 
   const updateTaskAssignment = async (newUserId) => {
-    task.userId = newUserId;
+    // task.userId = newUserId;
+    console.log(`User id: ${user.id}`);
     const taskBody = {
       userId: newUserId,
-      title: task.title,
-      description: task.description,
-      timeEstimation: task.timeEstimation,
-      status: task.status,
-      projectId: task.projectId,
+      // title: task.title,
+      // description: task.description,
+      // timeEstimation: task.timeEstimation,
+      // status: task.status,
+      // projectId: task.projectId,
     };
     const { updatedTask } = await api.put(`/projects/${task.projectId}/tasks/${task.id}`, taskBody);
 
-    setDoneTasks(allTasks.filter((e) => e.status === 'Done'));
-    setIncompleteTasks(allTasks.filter((e) => e.status === 'Incomplete'));
+    if (updatedTask.status === 'Done') {
+      setDoneTasks([updatedTask, ...doneTasks.filter((e) => e !== task)]);
+      setIncompleteTasks(incompleteTasks.filter((e) => e !== task));
+    } else {
+      setDoneTasks(doneTasks.filter((e) => e !== task));
+      setIncompleteTasks([updatedTask, ...incompleteTasks.filter((e) => e !== task)]);
+    }
   };
 
   return (
