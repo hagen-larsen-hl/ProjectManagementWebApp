@@ -18,15 +18,12 @@ export const Task = ({ task, setIncompleteTasks, setDoneTasks, allTasks, deleteT
       status: newStatus,
       projectId: task.projectId,
     };
-    // console.log(`/projects/${task.projectId}/tasks`);
     const { updatedTask } = await api.put(`/projects/${task.projectId}/tasks/${task.id}`, taskBody);
 
     setDoneTasks(allTasks.filter((e) => e.status === 'Done'));
     setIncompleteTasks(allTasks.filter((e) => e.status === 'Incomplete'));
   };
 
-  // console.log('Beginning of Task');
-  // console.log(tasks);
   return (
     <div className="flex-col w-fit p-4 m-4 rp-10 border-2 rounded-md">
       <strong className="break-words">{task.title}</strong>

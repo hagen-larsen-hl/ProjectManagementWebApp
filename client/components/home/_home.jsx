@@ -55,10 +55,8 @@ export const Home = () => {
       setErrorMessage('Deletion failed. Please refresh and try again.');
     }
   };
-
   console.log(leaderProjects);
   console.log(memberProjects);
-
   return (
     <div>
       <PageHeader />
