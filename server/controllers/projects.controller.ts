@@ -2,11 +2,11 @@ import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query }
 import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Project } from 'server/entities/project.entity';
-import { ProjectMember } from 'server/entities/project_member.entity';
 import { Task } from 'server/entities/task.entity';
 import { ProjectMemberService } from 'server/providers/services/project.member.service';
 import { ProjectsService } from 'server/providers/services/projects.service';
 import { TasksService } from 'server/providers/services/tasks.service';
+import { UsersService } from 'server/providers/services/users.service';
 
 class ProjectBody {
   name: string;
@@ -26,6 +26,7 @@ export class ProjectsController {
   constructor(
     private projectsService: ProjectsService,
     private tasksService: TasksService,
+    private usersService: UsersService,
     private projectMemberService: ProjectMemberService,
   ) {}
 
@@ -81,18 +82,19 @@ export class ProjectsController {
   @Post('/projects/:id/tasks')
   public async createTask(@JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskBody) {
     let task = new Task();
-    task.userId = body.userId;
+    task.userId = jwtBody.userId;
     task.projectId = body.projectId;
     task.title = body.title;
     task.description = body.description;
     task.timeEstimation = body.timeEstimation;
     task.status = body.status;
+    task.user = await this.usersService.find(jwtBody.userId);
     task = await this.tasksService.createTask(task);
     return { task };
   }
 
   @Put('projects/:id/tasks/:task_id')
-  public async updateTask(@Param('task_id') task_id: string, @Body() body: TaskBody) {
+  public async updateTask(@Param('task_id') task_id: string, @Body() body: TaskBody, @JwtBody() jwtBody: JwtBodyDto) {
     let task = new Task();
     task.id = parseInt(task_id, 10);
     task.userId = body.userId;
@@ -101,13 +103,17 @@ export class ProjectsController {
     task.description = body.description;
     task.timeEstimation = body.timeEstimation;
     task.status = body.status;
+    task.user = await this.usersService.find(jwtBody.userId);
     task = await this.tasksService.createTask(task);
     return { task };
   }
 
   @Delete('projects/:id/tasks/:task_id')
-  public async deleteTask(@Param('task_id') task_id: string) {
+  public async deleteTask(@Param('task_id') task_id: string, @JwtBody() jwtBody: JwtBodyDto) {
     const task = await this.tasksService.findTaskById(parseInt(task_id, 10));
+    if (task.userId != jwtBody.userId) {
+      return { success: false };
+    }
     this.tasksService.deleteTask(task);
     return { success: true };
   }

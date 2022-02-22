@@ -60,6 +60,7 @@ export const ProjectHome = () => {
     }
   };
 
+
   return (
     <div>
       <PageHeader />
@@ -117,6 +118,7 @@ export const ProjectHome = () => {
             setTasks={setTasks}
             allTasks={tasks}
             deleteTask={deleteTask}
+            user={user}
           />
         </div>
         <div className="border-2 rounded-md m-4 min-w-full place-content-center">
@@ -127,6 +129,7 @@ export const ProjectHome = () => {
             setDoneTasks={setDoneTasks}
             allTasks={tasks}
             deleteTask={deleteTask}
+            user={user}
           />
         </div>
       </div>
