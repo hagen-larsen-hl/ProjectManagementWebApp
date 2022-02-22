@@ -14,6 +14,8 @@ export const Project = ({ project, deleteProject }) => {
       projectId: project.id,
     };
     const { projectMember } = await api.post('/members', projectMemberBody);
+
+    return { projectMember };
   };
 
   return (

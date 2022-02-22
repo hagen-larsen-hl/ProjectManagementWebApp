@@ -1,3 +1,4 @@
+import { MemberProject } from './member_project';
 import { Project } from './project';
 
 export const Projects = ({ leaderProjects, memberProjects, deleteProject }) => {
@@ -16,7 +17,7 @@ export const Projects = ({ leaderProjects, memberProjects, deleteProject }) => {
           <strong>Member Of</strong>
         </div>
         {memberProjects.map((project) => (
-          <Project key={project.id} project={project} deleteProject={deleteProject} />
+          <MemberProject key={project.id} project={project} />
         ))}
       </div>
     </div>
