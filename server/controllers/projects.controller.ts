@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, HttpException, Param, Post } from '@nest
 import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Project } from 'server/entities/project.entity';
-import { ProjectMember } from 'server/entities/project_member.entity';
 import { Task } from 'server/entities/task.entity';
 import { ProjectsService } from 'server/providers/services/projects.service';
 import { TasksService } from 'server/providers/services/tasks.service';
@@ -27,6 +26,8 @@ export class ProjectsController {
   @Get('/projects')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
     const projects = await this.projectsService.findAllForUser(jwtBody.userId);
+    //const projectIds = await this.projectsService.getProjectIds(jwtBody.userId);
+    //console.log('project Ids', projectIds);
     return { projects };
   }
 
@@ -52,9 +53,9 @@ export class ProjectsController {
   }
 
   @Get('/projects/:id/tasks')
-  public async getTasks(@Param('id') id: string) {
-    const tasks = await this.tasksService.findAllForProject(parseInt(id, 10));
-    return { tasks };
+  public async getTasks(@Param('id') id: number) {
+    const projects = await this.tasksService.findAllForProject(id);
+    return projects;
   }
 
   @Post('/projects/:id/tasks')
