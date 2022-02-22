@@ -113,7 +113,6 @@ export class ProjectsController {
   @Delete('projects/:id/tasks/:task_id')
   public async deleteTask(@Param('task_id') task_id: string, @JwtBody() jwtBody: JwtBodyDto) {
     const task = await this.tasksService.findTaskById(parseInt(task_id, 10));
-    console.log(task.project.leaderId);
     if (task.userId == jwtBody.userId || task.project.leaderId == jwtBody.userId) {
       this.tasksService.deleteTask(task);
       return { success: true };
