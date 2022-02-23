@@ -3,6 +3,7 @@ import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Project } from 'server/entities/project.entity';
 import { Task } from 'server/entities/task.entity';
+import { ProjectMemberService } from 'server/providers/services/project.member.service';
 import { ProjectsService } from 'server/providers/services/projects.service';
 import { TasksService } from 'server/providers/services/tasks.service';
 import { UsersService } from 'server/providers/services/users.service';
@@ -26,6 +27,7 @@ export class ProjectsController {
     private projectsService: ProjectsService,
     private tasksService: TasksService,
     private usersService: UsersService,
+    private projectMemberService: ProjectMemberService,
   ) {}
 
   @Get('/projects/leader')
@@ -38,6 +40,16 @@ export class ProjectsController {
   public async indexMemberOf(@JwtBody() jwtBody: JwtBodyDto) {
     const projects = await this.projectsService.findAllWithMember(jwtBody.userId);
     return { memberProjects: projects };
+  }
+
+  @Get('/projects/memberOf')
+  public async memberOf(@JwtBody() jwtBody: JwtBodyDto) {
+    const projectMembers = await this.projectMemberService.findAllForUserId(jwtBody.userId);
+    const projects = [];
+    for (const projectMember of projectMembers) {
+      projects.push(await this.projectsService.findProjectById(projectMember.projectId));
+    }
+    return { projects };
   }
 
   @Post('/projects')
