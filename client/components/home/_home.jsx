@@ -43,7 +43,6 @@ export const Home = () => {
       name: name,
     };
     const { project } = await api.post('/projects', projectBody);
-    // console.log(projects);
     setLeaderProjects([...leaderProjects, project]);
   };
 
@@ -55,9 +54,6 @@ export const Home = () => {
       setErrorMessage('Deletion failed. Please refresh and try again.');
     }
   };
-
-  console.log(leaderProjects);
-  console.log(memberProjects);
 
   return (
     <div>

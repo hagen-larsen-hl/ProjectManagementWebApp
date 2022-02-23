@@ -41,7 +41,6 @@ export const ProjectHome = () => {
       projectId: params.id,
     };
     const { task } = await api.post(`/projects/${params.id}/tasks`, taskBody);
-    // console.log(task);
     setTasks([task, ...tasks]);
     setIncompleteTasks([task, ...incompleteTasks]);
     setTaskTitle('');
@@ -60,6 +59,7 @@ export const ProjectHome = () => {
       console.log('Delete failed');
     }
   };
+
 
   return (
     <div>
@@ -118,6 +118,7 @@ export const ProjectHome = () => {
             setTasks={setTasks}
             allTasks={tasks}
             deleteTask={deleteTask}
+            user={user}
           />
         </div>
         <div className="border-2 rounded-md m-4 min-w-full place-content-center">
@@ -128,6 +129,7 @@ export const ProjectHome = () => {
             setDoneTasks={setDoneTasks}
             allTasks={tasks}
             deleteTask={deleteTask}
+            user={user}
           />
         </div>
       </div>
