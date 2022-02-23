@@ -22,6 +22,13 @@ export class ProjectMemberService {
     });
   }
 
+  findAllForProject(projectId: number): Promise<ProjectMember[]> {
+    return this.projectMemberRepository.find({
+      where: { projectId },
+      relations: ['user'],
+    });
+  }
+
   createProjectMember(projectMember: ProjectMember): Promise<ProjectMember> {
     return this.projectMemberRepository.save(projectMember);
   }
