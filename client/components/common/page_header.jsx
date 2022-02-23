@@ -1,10 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { RolesContext } from '../../utils/roles_context';
+import { ApiContext } from '../../utils/api_context';
+import { AuthContext } from '../../utils/auth_context';
 import { useNavigate } from 'react-router';
 import { ButtonBig } from '../common/button_big';
 
 export const PageHeader = () => {
+  const [, setAuthToken] = useContext(AuthContext);
   const roles = useContext(RolesContext);
+  const api = useContext(ApiContext);
   const navigate = useNavigate();
 
   const logout = async () => {

@@ -1,15 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { ApiContext } from '../../utils/api_context';
-import { AuthContext } from '../../utils/auth_context';
-import { RolesContext } from '../../utils/roles_context';
 import { BlueButtonBig } from '../common/blue_button_big';
 import { PageHeader } from '../common/page_header';
 import { Tasks } from './tasks';
 import { useParams } from 'react-router-dom';
 
 export const ProjectHome = () => {
-  const [, setAuthToken] = useContext(AuthContext);
-  const [tasks, setTasks] = useState([]);
+  const [projectMembers, setProjectMembers] = useState([]);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskEstimation, setTaskEstimation] = useState('');
@@ -18,7 +15,6 @@ export const ProjectHome = () => {
   const [incompleteTasks, setIncompleteTasks] = useState([]);
 
   const api = useContext(ApiContext);
-  const roles = useContext(RolesContext);
   const params = useParams();
   const [user, setUser] = useState(null);
 
@@ -26,8 +22,9 @@ export const ProjectHome = () => {
     const res = await api.get('/users/me');
     setUser(res.user);
     const { tasks } = await api.get(`/projects/${params.id}/tasks`);
+    const { members } = await api.get(`/projects/${params.id}/members`);
 
-    // setTasks(tasks);
+    setProjectMembers(members);
     setDoneTasks(tasks.filter((task) => task.status === 'Done'));
     setIncompleteTasks(tasks.filter((task) => task.status === 'Incomplete'));
   }, []);
@@ -41,7 +38,6 @@ export const ProjectHome = () => {
       projectId: params.id,
     };
     const { task } = await api.post(`/projects/${params.id}/tasks`, taskBody);
-    // setTasks([task, ...tasks]);
     setIncompleteTasks([task, ...incompleteTasks]);
     setTaskTitle('');
     setTaskDescription('');
@@ -59,10 +55,6 @@ export const ProjectHome = () => {
       console.log('Delete failed');
     }
   };
-
-
-  console.log(doneTasks);
-  console.log(incompleteTasks);
 
   return (
     <div>
@@ -118,12 +110,11 @@ export const ProjectHome = () => {
             tasks={incompleteTasks}
             setIncompleteTasks={setIncompleteTasks}
             setDoneTasks={setDoneTasks}
-            setTasks={setTasks}
-            allTasks={tasks}
             doneTasks={doneTasks}
             incompleteTasks={incompleteTasks}
             deleteTask={deleteTask}
             user={user}
+            projectMembers={projectMembers}
           />
         </div>
         <div className="border-2 rounded-md m-4 min-w-full place-content-center">
@@ -132,11 +123,11 @@ export const ProjectHome = () => {
             tasks={doneTasks}
             setIncompleteTasks={setIncompleteTasks}
             setDoneTasks={setDoneTasks}
-            allTasks={tasks}
             doneTasks={doneTasks}
             incompleteTasks={incompleteTasks}
             deleteTask={deleteTask}
             user={user}
+            projectMembers={projectMembers}
           />
         </div>
       </div>

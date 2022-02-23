@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
 import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Project } from 'server/entities/project.entity';
@@ -73,6 +73,12 @@ export class ProjectsController {
     return { success: true };
   }
 
+  @Get('/projects/:id/members')
+  public async getProjectMembers(@Param('id') id: string) {
+    const members = await this.projectMemberService.findAllForProject(parseInt(id, 10));
+    return { members };
+  }
+
   @Get('/projects/:id/tasks')
   public async getTasks(@Param('id') id: string) {
     const tasks = await this.tasksService.findAllForProject(parseInt(id, 10));
@@ -82,21 +88,18 @@ export class ProjectsController {
   @Post('/projects/:id/tasks')
   public async createTask(@JwtBody() jwtBody: JwtBodyDto, @Body() body: TaskBody) {
     let task = new Task();
-    // task.userId = jwtBody.userId;
     task.projectId = body.projectId;
     task.title = body.title;
     task.description = body.description;
     task.timeEstimation = body.timeEstimation;
     task.status = body.status;
-    // task.user = await this.usersService.find(jwtBody.userId);
-    // task.project = await this.projectsService.findProjectById(body.projectId);
     task = await this.tasksService.createTask(task);
     task = await this.tasksService.findTaskById(task.id);
     return { task };
   }
 
   @Put('projects/:id/tasks/:task_id')
-  public async updateTask(@Param('task_id') task_id: string, @Body() body: TaskBody, @JwtBody() jwtBody: JwtBodyDto) {
+  public async updateTask(@Param('task_id') task_id: string, @Body() body: TaskBody) {
     let task = new Task();
     task.id = parseInt(task_id, 10);
     task.userId = body.userId;
@@ -105,8 +108,6 @@ export class ProjectsController {
     task.description = body.description;
     task.timeEstimation = body.timeEstimation;
     task.status = body.status;
-    // task.user = await this.usersService.find(jwtBody.userId);
-    // task.project = await this.projectsService.findProjectById(body.projectId);
     task = await this.tasksService.createTask(task);
     task = await this.tasksService.findTaskById(parseInt(task_id, 10));
     return { updatedTask: task };

@@ -3,32 +3,25 @@ import { ApiContext } from '../../utils/api_context';
 import { Button } from '../common/button';
 import { BlueButton } from '../common/blue_button';
 import { RedButton } from '../common/red_button';
+import { ProjectMemberSelect } from './project_member_select';
 
 export const Task = ({
   task,
   setIncompleteTasks,
   setDoneTasks,
-  allTasks,
   doneTasks,
   incompleteTasks,
   deleteTask,
   user,
+  projectMembers,
 }) => {
   const api = useContext(ApiContext);
 
   const updateTaskStatus = async (newStatus) => {
-    // task.status = newStatus;
     const taskBody = {
-      // userId: task.userId,
-      // title: task.title,
-      // description: task.description,
-      // timeEstimation: task.timeEstimation,
       status: newStatus,
-      // projectId: task.projectId,
     };
     const { updatedTask } = await api.put(`/projects/${task.projectId}/tasks/${task.id}`, taskBody);
-    
-    console.log(`Updated task: ${updatedTask}`);
 
     if (newStatus === 'Done') {
       setDoneTasks([updatedTask, ...doneTasks.filter((e) => e !== task)]);
@@ -40,15 +33,8 @@ export const Task = ({
   };
 
   const updateTaskAssignment = async (newUserId) => {
-    // task.userId = newUserId;
-    console.log(`User id: ${user.id}`);
     const taskBody = {
       userId: newUserId,
-      // title: task.title,
-      // description: task.description,
-      // timeEstimation: task.timeEstimation,
-      // status: task.status,
-      // projectId: task.projectId,
     };
     const { updatedTask } = await api.put(`/projects/${task.projectId}/tasks/${task.id}`, taskBody);
 
@@ -68,6 +54,12 @@ export const Task = ({
       <p>Time: {task.timeEstimation}</p>
       <p>Status: {task.status}</p>
       {task.userId && <p>Assignee Email: {task.user.email}</p>}
+      {task.project.leaderId == user.id && (
+        <ProjectMemberSelect
+          projectMembers={projectMembers}
+          updateTaskAssignment={updateTaskAssignment}
+        ></ProjectMemberSelect>
+      )}
       <div className="py-2">
         <RedButton onClick={() => deleteTask(task)}>Delete</RedButton>
         <Button onClick={() => updateTaskAssignment(user.id)}>Assign to me</Button>

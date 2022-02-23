@@ -4,11 +4,11 @@ export const Tasks = ({
   tasks,
   setIncompleteTasks,
   setDoneTasks,
-  allTasks,
   doneTasks,
   incompleteTasks,
   deleteTask,
   user,
+  projectMembers,
 }) => {
   return (
     <div className="flex-auto">
@@ -18,11 +18,11 @@ export const Tasks = ({
           task={task}
           setIncompleteTasks={setIncompleteTasks}
           setDoneTasks={setDoneTasks}
-          allTasks={allTasks}
           doneTasks={doneTasks}
           incompleteTasks={incompleteTasks}
           deleteTask={deleteTask}
           user={user}
+          projectMembers={projectMembers}
         />
       ))}
     </div>
