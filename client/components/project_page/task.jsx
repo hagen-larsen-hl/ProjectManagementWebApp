@@ -45,7 +45,7 @@ export const Task = ({ task, setIncompleteTasks, setDoneTasks, allTasks, deleteT
       <p className="break-words">{task.description}</p>
       <p>Time: {task.timeEstimation}</p>
       <p>Status: {task.status}</p>
-      <p>User: {task.userId}</p>
+      <p>Assignee Email: {task.user.email}</p>
       <div className="py-2">
         <RedButton onClick={() => deleteTask(task)}>Delete</RedButton>
         <Button onClick={() => updateTaskAssignment(user.id)}>Assign to me</Button>
