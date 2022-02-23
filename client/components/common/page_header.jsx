@@ -1,32 +1,23 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { RolesContext } from '../../utils/roles_context';
-import { ApiContext } from '../../utils/api_context';
-import { AuthContext } from '../../utils/auth_context';
 import { useNavigate } from 'react-router';
 import { ButtonBig } from '../common/button_big';
 
-export const PageHeader = () => {
-  const [, setAuthToken] = useContext(AuthContext);
+export const PageHeader = ({ logout }) => {
   const roles = useContext(RolesContext);
-  const api = useContext(ApiContext);
   const navigate = useNavigate();
-
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
 
   return (
     <div className="p-4 m-4 border-2 rounded-md">
-      <ButtonBig type="button" onClick={logout}>
-        Logout
-      </ButtonBig>
+      {logout && (
+        <ButtonBig type="button" onClick={logout}>
+          Logout
+        </ButtonBig>
+      )}
       <ButtonBig type="button" onClick={() => navigate('/')}>
         Projects
       </ButtonBig>
-      {roles.includes('admin') && (
+      {roles !== undefined && roles.includes('admin') && (
         <ButtonBig type="button" onClick={() => navigate('/admin')}>
           Admin
         </ButtonBig>

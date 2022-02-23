@@ -63,11 +63,11 @@ export const Task = ({
       <div className="py-2">
         <RedButton onClick={() => deleteTask(task)}>Delete</RedButton>
         <Button onClick={() => updateTaskAssignment(user.id)}>Assign to me</Button>
-        {task.status === 'Incomplete' ? (
-          <BlueButton onClick={() => updateTaskStatus('Done')}>Mark Done</BlueButton>
-        ) : (
-          <BlueButton onClick={() => updateTaskStatus('Incomplete')}>Mark Incomplete</BlueButton>
-        )}
+        {task.status === 'Incomplete'
+          ? task.userId === user.id && <BlueButton onClick={() => updateTaskStatus('Done')}>Mark Done</BlueButton>
+          : task.userId === user.id && (
+              <BlueButton onClick={() => updateTaskStatus('Incomplete')}>Mark Incomplete</BlueButton>
+            )}
       </div>
     </div>
   );
