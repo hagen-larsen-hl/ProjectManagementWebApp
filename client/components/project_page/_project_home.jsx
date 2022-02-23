@@ -48,7 +48,6 @@ export const ProjectHome = () => {
   const deleteTask = async (task) => {
     const { success } = await api.del(`projects/${params.id}/tasks/${task.id}`);
     if (success) {
-      // setTasks(tasks.filter((t) => t !== task));
       setDoneTasks(doneTasks.filter((t) => t !== task));
       setIncompleteTasks(incompleteTasks.filter((t) => t !== task));
     } else {
@@ -59,7 +58,6 @@ export const ProjectHome = () => {
   return (
     <div>
       <PageHeader />
-
       <div className="relative inline-block text-left m-5 ">
         <div>
           <BlueButtonBig type="button" onClick={() => setShowCreateTaskMenu(!showCreateTaskMenu)}>
