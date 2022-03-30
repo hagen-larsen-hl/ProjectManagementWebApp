@@ -1,7 +1,7 @@
 # cs4610webapp
 
 ## Description
-A starter app with Postgres, NestJS, and React
+A project management app built with Postgres, NestJS, and React. Once authenticated, users can create projects and invite other users to the project by email. Project leaders and members can create and complete tasks for any project they have access to.
 
 ## Cloning the project
 IMPORTANT Windows users should setup WSL first before cloning. See [WSL_SETUP.md](/WSL_SETUP.md)
