@@ -3,6 +3,11 @@
 ## Description
 A project management app built with Postgres, NestJS, and React. Once authenticated, users can create projects and invite other users to the project by email. Project leaders and members can create and complete tasks for any project they have access to.
 
+Developed as a group, my contributions specifically were:
+1. Initial landing page dispalying user information and their projects, including both projects they created and projects they've been invited to.
+2. Endpoints to obtain project records from database using REST principles
+3. Project and Projects React components
+
 ## Cloning the project
 IMPORTANT Windows users should setup WSL first before cloning. See [WSL_SETUP.md](/WSL_SETUP.md)
 This app is designed to used as a starting point for another application so you will want to clone the project into a folder that matches your app. Run
