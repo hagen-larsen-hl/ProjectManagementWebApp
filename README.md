@@ -13,7 +13,7 @@ including both projects they created and projects they've been invited to.
 3. Project and Projects React components
 
 ## Build Instructions
-Find the build instructions for this project [here](INSTRUCTIONS.md)
+Find the build instructions for this project [here](INSTRUCTIONS.md). The project is also published on the [web](http://georgefourmen1.herokuapp.com/) with Heroku!
 
 ## Images
 ![Landing Screen](docs/projects.png)
