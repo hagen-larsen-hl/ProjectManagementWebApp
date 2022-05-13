@@ -1,31 +1,5 @@
 # Build Instructions
 
-## Cloning the project
-IMPORTANT Windows users should setup WSL first before cloning. See [WSL_SETUP.md](/WSL_SETUP.md)
-This app is designed to used as a starting point for another application so you will want to clone the project into a folder that matches your app. Run
-```bash
-$ git clone git@github.com:dittonjs/NestStarterApp.git <YourAppName>
-```
-a
-Replace your app name with the name of your app, for example
-```bash
-$ git clone git@github.com:dittonjs/NestStarterApp.git SpyChat
-```
-
-Next, go create a remote repository in github (or gitlab, or bitbucket, it doesn't matter) for your new application.
-
-Finally, run
-```bash
-$ bash ./bin/setup_new_project.sh
-```
-and follow the prompts. This script will link the repo to your new repo while maintaining a reference to the starter app repo. This way, if we make changes to the starter app repo, you can still get those changes.
-
-## Pulling Updates from Starter App
-
-To retrieve changes from the starter app run
-```bash
-$ git pull upstream main
-```
 ## Prerequisites
 ### VSCode
 I know there are bunch of editors but trust me, VS Code will make your life easier, mostly becuase it is what I use and if you have issues I can help you. If you use something else IT WILL BE YOUR RESPONSIBILITY TO MAKE SURE IT IS CONFIGURED PROPERLY.
